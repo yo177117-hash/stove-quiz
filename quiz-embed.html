@@ -14,8 +14,8 @@ body{margin:0;background:#f7f7fb}
 h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var(--orange)}
 .muted{color:#0B0B0D}
 .start-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
-.btn{appearance:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;background:#111827;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12)}
-.btn.secondary{background:#eef1f7;color:#111827}
+.btn{appearance:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;background:#111827;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12);text-decoration:none;display:inline-block}
+.btn.secondary{background:#eef1f7;color:#111827;border:1px solid #dcdfea}
 .btn.link{background:#fff;border:1px solid #e6e9f4;color:#0f172a}
 .btn:active{transform:translateY(1px)}
 .quiz-box{display:none}
@@ -43,12 +43,14 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 <div class="wrap">
   <div id="start" class="card center">
     <h1>스토브 능력시험</h1>
-    <div class="muted">문항당 60초, 총 9문제 · 문제당 10점</div>
-    <div class="badge">v1.1 · GitHub Pages</div>
+    <div class="muted">문항당 60초, 총 9문제 · 문항당 10점</div>
+    <div class="badge">v1.2 · GitHub Pages</div>
     <p style="margin:18px 0 0;font-weight:800;">스토브능력시험을 시작하겠습니까?</p>
     <div class="start-actions">
       <button type="button" class="btn" id="btnYes">네</button>
-      <button type="button" class="btn secondary" id="btnNo">아니오</button>
+      <!-- 아니오: 스토브 스토어로 상위탭 이동 -->
+      <a class="btn secondary" id="btnNo"
+         href="https://store.onstove.com" target="_top" rel="noopener">아니오</a>
     </div>
   </div>
 
@@ -77,7 +79,7 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 
     <div class="congrats" id="congrats">
       🎉 <strong>축하합니다! 만점을 획득하셨어요.</strong><br/>
-      <a href="https://store.onstove.com" target="_blank" rel="noopener">선물 받으러 바로가기</a>
+      <a href="https://store.onstove.com" target="_top" rel="noopener">스토브 스토어 바로가기</a>
     </div>
   </div>
 </div>
@@ -89,14 +91,14 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 
   // ===== 데이터 =====
   const ALL_QUESTIONS = [
-    {type:'객관식', q:'[두근두근 야심작]의 시작을 함께한 첫번째 타이틀을 고르시오', options:['A. 동아리','B. 러브 리플레이','C. 러브 스티치','D. 러브인 로그인', 'E. 러브 딜리버리'], answer:'E'},
-    {type:'객관식', q:'2025년 진행했던 스토브 이벤트 중 이름이 잘못된 것을 고르시오.', options:['A. 할인이 왔당근','B. 새로 시작했나봄','C. 구구 후기 이벤트','D. 방구석 겜캉스', 'E. 리얼썸머 얼리썸머'], answer:'A'},
-    {type:'객관식', q:'다음 중 2025년에 스토브에 새로 출시된 게임이 아닌 것을 고르시오.', options:['A. 슈퍼 판타지 킹덤','B. 캐틀 컨트리','C. 헤비 레인','D. 후즈 앳 더 도어', 'E. 이프선셋'], answer:'E'},
-    {type:'객관식', q:'다음 중 게임의 주요 배경이 학교가 아닌 것을 고르시오.', options:['A. 방과후 운동장','B. 서머 리버스','C. 랜덤채팅의 그녀','D. 러브 리플레이', 'E. 리프 인 부트스트랩'], answer:'D'},
-    {type:'객관식', q:'<고독방송>의 주인공 유나가 게임 속에서 입은 적 없는 옷을 고르시오.', options:['A. 바니걸룩','B. 간호사복','C. 테니스스커트','D. 환자복', 'E. 경찰복'], answer:'E'},
-    {type:'객관식', q:'<폭풍의 메이드>에 등장하는 주요인물 6인이 아닌 것을 고르시오.', options:['A. 카렌','B. 벨','C. 모니카','D. 스칼렛', 'E. 보라'], answer:'D'},
-    {type:'객관식', q:'다음 중 스토브의 비주얼 노벨 큐레이션, [두근두근 야심작]에 해당하는 게임을 고르시오.', options:['A. 시켜주세요 산책!','B. 두근두근 라면집','C. 계약x연애','D. 고독방송', 'E. 하모닉스'], answer:'C'},
-    {type:'객관식', q:'다음 중 2025년에 정식 출시한 [두근두근 야심작]이 아닌 것을 고르시오.', options:['A. 프렌치커넥션','B. 푸른 달빛 속에서','C. 서머 리버스','D. 사니양 연구실', 'E. 블랙 하트'], answer:'D'},
+    {type:'객관식', q:'[두근두근 야심작]의 시작을 함께한 첫번째 타이틀을 고르시오', options:['A. 동아리','B. 러브 리플레이','C. 러브 스티치','D. 러브인 로그인','E. 러브 딜리버리'], answer:'E'},
+    {type:'객관식', q:'2025년 진행했던 스토브 이벤트 중 이름이 잘못된 것을 고르시오.', options:['A. 할인이 왔당근','B. 새로 시작했나봄','C. 구구 후기 이벤트','D. 방구석 겜캉스','E. 리얼썸머 얼리썸머'], answer:'A'},
+    {type:'객관식', q:'다음 중 2025년에 스토브에 새로 출시된 게임이 아닌 것을 고르시오.', options:['A. 슈퍼 판타지 킹덤','B. 캐틀 컨트리','C. 헤비 레인','D. 후즈 앳 더 도어','E. 이프선셋'], answer:'E'},
+    {type:'객관식', q:'다음 중 게임의 주요 배경이 학교가 아닌 것을 고르시오.', options:['A. 방과후 운동장','B. 서머 리버스','C. 랜덤채팅의 그녀','D. 러브 리플레이','E. 리프 인 부트스트랩'], answer:'D'},
+    {type:'객관식', q:'<고독방송>의 주인공 유나가 게임 속에서 입은 적 없는 옷을 고르시오.', options:['A. 바니걸룩','B. 간호사복','C. 테니스스커트','D. 환자복','E. 경찰복'], answer:'E'},
+    {type:'객관식', q:'<폭풍의 메이드>에 등장하는 주요인물 6인이 아닌 것을 고르시오.', options:['A. 카렌','B. 벨','C. 모니카','D. 스칼렛','E. 보라'], answer:'D'},
+    {type:'객관식', q:'다음 중 스토브의 비주얼 노벨 큐레이션, [두근두근 야심작]에 해당하는 게임을 고르시오.', options:['A. 시켜주세요 산책!','B. 두근두근 라면집','C. 계약x연애','D. 고독방송','E. 하모닉스'], answer:'C'},
+    {type:'객관식', q:'다음 중 2025년에 정식 출시한 [두근두근 야심작]이 아닌 것을 고르시오.', options:['A. 프렌치커넥션','B. 푸른 달빛 속에서','C. 서머 리버스','D. 사니양 연구실','E. 블랙 하트'], answer:'D'},
     {type:'객관식', q:'다음의 게임 주인공들 중 머리색이 다른 한 명을 고르시오.', options:['A. 병원x생활-하미나','B. 푸른 달빛 속에서-은랑','C. 아르티스 임팩트-아카네','D. 서큐하트-이에','E. 스칼렛 크로스-엘리엇'], answer:'B'},
     {type:'객관식', q:'다음 공포 게임들 중 게임의 이름이 올바르지 않은 것을 고르시오.', options:['A. 고독방송','B. 공포의 섹시 물귀신','C. 후즈 앳 더 도어','D. 언더월드','E. SAEKO'], answer:'D'},
     {type:'객관식', q:'다음 중 도트로 디자인된 게임이 아닌 것을 고르시오.', options:['A. 캐틀 컨트리','B. 리듬 마녀: 죽음과 함께 춤을','C. 폭풍의 메이드','D. 리서치 스토리','E. 아르티스 임팩트'], answer:'B'},
@@ -133,15 +135,13 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 
   // ===== 유틸 =====
   const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
-  const norm = s => String(s??'').trim().toLowerCase().replace(/\s+/g,''); // 공백/대소문자 무시 비교
+  const norm = s => String(s??'').trim().toLowerCase().replace(/\s+/g,''); // 공백/대소문자 무시
 
   // ===== 로직 =====
   function bootstrap(){
     $("#btnYes").addEventListener('click', startQuiz);
-    $("#btnNo").addEventListener('click', ()=>alert('다음에 다시 도전해 주세요!'));
-    // 주관식: 엔터 제출
+    // btnNo는 <a target="_top">이라 JS 불필요
     elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') elSubmit.click(); });
-    // 제출 버튼
     elSubmit.addEventListener('click', ()=>{
       const q = quizData[current];
       submitAnswer(q && q.type==='주관식' ? (elAnswer.value||'') : null);
@@ -221,42 +221,38 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
     elScoreText.textContent=`당신의 점수는 ${score}점입니다. (총 ${quizData.length}문항, 문항당 ${POINT}점)`;
     elTimeText.textContent=`총 소요 시간: ${total}초`;
     elDetail.textContent=`문항별 소요(초): ${perTimes.join(' / ')}`;
-
-    // 등급 계산 및 렌더
     renderGrade(score/POINT);
   }
 
   function renderGrade(correctCnt){
     elCongrats.style.display='none';
     elGrade.style.display='block';
-    elGrade.innerHTML=''; // reset
+    elGrade.innerHTML='';
 
     const actions = document.createElement('div');
     actions.className='grade-actions';
 
-const makeBtn = (label, attrs={})=>{
-  const a = document.createElement(attrs.href ? 'a' : 'button');
-  a.className = 'btn' + (attrs.kind ? ' '+attrs.kind : '');
-  a.textContent = label;
-  if (attrs.href) {
-    a.href = attrs.href;
-    a.target = attrs.target || '_top';   // ← 기본을 _top으로
-    a.rel = 'noopener';
-  }
-  if (attrs.on) a.addEventListener('click', attrs.on);
-  return a;
-};
+    const makeBtn = (label, attrs={})=>{
+      const a=document.createElement(attrs.href ? 'a' : 'button');
+      a.className='btn' + (attrs.kind ? ' '+attrs.kind : '');
+      a.textContent=label;
+      if(attrs.href){
+        a.href=attrs.href;
+        a.target=attrs.target || '_top';   // ← 상위탭 이동 기본
+        a.rel='noopener';
+      }
+      if(attrs.on) a.addEventListener('click', attrs.on);
+      return a;
+    };
 
     const retryBtn = makeBtn('재도전하기', { on: startQuiz });
-    const stoveBtn = makeBtn('스토브 스토어 바로가기', { href:'https://www.onstove.com', kind:'link', target:'_top' });
-    const storeBtn = makeBtn('만점 선물받기 🎁', { href:'https://store.onstove.com', target:'_top' });
+    const stoveBtn = makeBtn('스토브 바로가기', { href:'https://www.onstove.com', kind:'link', target:'_top' });
+    const storeBtn = makeBtn('스토브 스토어 바로가기 🎁', { href:'https://store.onstove.com', target:'_top' });
 
-    // 메시지 분기
     let msg='';
     if(correctCnt===9){
       msg = '🎁 <strong>당신은 1등급! 항상 감사합니다.</strong>';
       actions.appendChild(storeBtn);
-      // 완벽 달성 배지도 표시
       elCongrats.style.display='block';
     } else if(correctCnt===8){
       msg = '<strong>아쉽네요. 당신은 2등급!</strong> 재도전하세요!';
@@ -292,11 +288,8 @@ const makeBtn = (label, attrs={})=>{
     elGrade.appendChild(actions);
   }
 
-  // 부트
   bootstrap();
 })();
 </script>
 </body>
 </html>
-
-
