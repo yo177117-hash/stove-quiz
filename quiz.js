@@ -171,7 +171,7 @@
   <div class="wrap">
     <div id="start" class="card center">
       <h1>스토브 능력시험</h1>
-      <div class="muted">문항당 30초, 총 9문제 · 문제당 10점</div>
+      <div class="muted">문항당 60초, 총 9문제 · 문제당 10점</div>
       <p style="margin:18px 0 0; font-weight:800;">스토브능력시험을 시작하겠습니까?</p>
       <div class="start-actions">
         <button type="button" class="btn" id="btnYes">네</button>
@@ -303,4 +303,5 @@
     if(score===POINT*quizData.length) elCongrats.style.display='block';
   }
 })();
+
 
