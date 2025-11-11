@@ -77,7 +77,7 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 
     <div class="congrats" id="congrats">
       🎉 <strong>축하합니다! 만점을 획득하셨어요.</strong><br/>
-      <a href="https://store.onstove.com" target="_blank" rel="noopener">스토브 스토어 바로가기</a>
+      <a href="https://store.onstove.com" target="_blank" rel="noopener">선물 받으러 바로가기</a>
     </div>
   </div>
 </div>
@@ -248,8 +248,8 @@ const makeBtn = (label, attrs={})=>{
 };
 
     const retryBtn = makeBtn('재도전하기', { on: startQuiz });
-    const stoveBtn = makeBtn('스토브 바로가기', { href:'https://www.onstove.com', kind:'link' });
-    const storeBtn = makeBtn('스토브 스토어 바로가기 🎁', { href:'https://store.onstove.com' });
+    const stoveBtn = makeBtn('스토브 스토어 바로가기', { href:'https://www.onstove.com', kind:'link', target:'_top' });
+    const storeBtn = makeBtn('만점 선물받기 🎁', { href:'https://store.onstove.com', target:'_top' });
 
     // 메시지 분기
     let msg='';
@@ -298,4 +298,5 @@ const makeBtn = (label, attrs={})=>{
 </script>
 </body>
 </html>
+
 
