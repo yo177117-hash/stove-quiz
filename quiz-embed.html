@@ -234,14 +234,18 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
     const actions = document.createElement('div');
     actions.className='grade-actions';
 
-    const makeBtn = (label, attrs={})=>{
-      const a=document.createElement(attrs.href ? 'a' : 'button');
-      a.className='btn' + (attrs.kind ? ' '+attrs.kind : '');
-      a.textContent=label;
-      if(attrs.href){ a.href=attrs.href; a.target='_blank'; a.rel='noopener'; }
-      if(attrs.on){ a.addEventListener('click', attrs.on); }
-      return a;
-    };
+const makeBtn = (label, attrs={})=>{
+  const a = document.createElement(attrs.href ? 'a' : 'button');
+  a.className = 'btn' + (attrs.kind ? ' '+attrs.kind : '');
+  a.textContent = label;
+  if (attrs.href) {
+    a.href = attrs.href;
+    a.target = attrs.target || '_top';   // ← 기본을 _top으로
+    a.rel = 'noopener';
+  }
+  if (attrs.on) a.addEventListener('click', attrs.on);
+  return a;
+};
 
     const retryBtn = makeBtn('재도전하기', { on: startQuiz });
     const stoveBtn = makeBtn('스토브 바로가기', { href:'https://www.onstove.com', kind:'link' });
@@ -294,3 +298,4 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 </script>
 </body>
 </html>
+
