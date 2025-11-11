@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>스토브 능력시험</title>
+  <style>
+    :root{ --perQuestionSeconds:30; --stove:#ff6b00; }
+
+    body{
+      font-family:Pretendard,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;
+      background:#f7f7fb;
+      color:var(--stove); /* 기본 글자색 오렌지 */
+    }
+    .wrap{ max-width:760px; margin:40px auto; padding:0 16px; }
+    .card{ background:#fff; border:1px solid #e6e9f4; border-radius:16px; padding:28px; box-shadow:0 8px 28px rgba(17,24,39,.08); }
+    .center{text-align:center}
+    h1{
+      margin:0 0 12px; font-size:28px; font-weight:900; letter-spacing:-.2px;
+      color:var(--stove); /* 시작 타이틀도 오렌지 */
+    }
+    .muted{ color:#0B0B0D; }
+
+    .start-actions{ display:flex; gap:12px; justify-content:center; margin-top:24px; }
+    .btn{
+      appearance:none; border:0; border-radius:12px; padding:12px 18px; font-weight:800; cursor:pointer;
+      background:#111827; color:#fff; box-shadow:0 6px 18px rgba(0,0,0,.12);
+    }
+    .btn.secondary{ background:#eef1f7; color:#111827; }
+    .btn:active{ transform:translateY(1px); }
+
+    .quiz-box{ display:none; }
+    .q-meta{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-size:15px; color:#4b5563; }
+    #timeLabel{ font-weight:900; color:var(--stove); } /* 타이머도 오렌지 */
+    .question{ font-size:22px; font-weight:900; margin:10px 0 16px; color:#0f172a; } /* 문제 본문은 진한 남색 */
+    .options button{
+      display:block; width:100%; text-align:left; padding:14px 16px; margin:12px 0;
+      border-radius:12px; border:1px solid #e1e4f0; background:#fafcff; cursor:pointer;
+      font-size:17px; font-weight:700; color:#111827; box-shadow:0 2px 6px rgba(0,0,0,.03);
+    }
+    .options button:hover{ background:#f2f6ff; border-color:#d8defa; }
+    .input-wrap{ display:none; }
+    .input-wrap input{ width:100%; padding:14px; border-radius:12px; border:1px solid #d9ddea; font-size:17px; background:#fafbff; }
+    .actions{ display:flex; justify-content:flex-end; margin-top:16px; }
+    .actions .btn{ padding:10px 18px; }
+
+    .result{ display:none; }
+    .score{ font-size:26px; font-weight:900; margin-bottom:8px; color:var(--stove); } /* 결과 점수 오렌지 */
+    .time-total{ color:#4b5563; margin-bottom:16px; font-weight:700; }
+    .congrats{ display:none; margin-top:12px; padding:14px; border-radius:12px; background:#fff8db; }
+    .congrats a{ color:#0b5fff; font-weight:900; text-decoration:none; }
+  </style>
+
+  <!-- 핵심: 외부 JS를 defer로 로드 -->
+  <script src="./quiz.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <!-- 시작 -->
+    <div id="start" class="card center">
+      <h1>스토브 능력시험</h1>
+      <div class="muted">문항당 30초, 총 10문제(무작위) · 문제당 10점</div>
+      <p style="margin:18px 0 0; font-weight:800;">스토브능력시험을 시작하겠습니까?</p>
+      <div class="start-actions">
+        <button type="button" class="btn" id="btnYes">네</button>
+        <button type="button" class="btn secondary" id="btnNo">아니오</button>
+      </div>
+      <div class="muted" style="margin-top:12px; font-size:13px;"></div>
+    </div>
+
+    <!-- 퀴즈 -->
+    <div id="quiz" class="card quiz-box">
+      <div class="q-meta">
+        <div id="progress">1 / 10</div>
+        <div id="timeLabel">남은시간: 30초</div>
+      </div>
+
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+
+      <div class="input-wrap" id="inputWrap">
+        <input type="text" id="answerInput" placeholder="정답을 입력하세요"/>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn" id="submitBtn">제출하기</button>
+      </div>
+    </div>
+
+    <!-- 결과 -->
+    <div id="result" class="card result center">
+      <div class="score" id="scoreText">당신의 점수는 0점입니다.</div>
+      <div class="time-total" id="timeText">총 소요 시간: 0초</div>
+      <div class="muted" id="detailTimes" style="font-size:13px;"></div>
+      <div class="congrats" id="congrats">
+        🎉 <strong>축하합니다! 100점을 획득하셨어요.</strong><br/>
+        <a href="https://store.onstove.com" target="_blank" rel="noopener">스토브 스토어 바로가기</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
