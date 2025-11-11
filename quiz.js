@@ -58,8 +58,9 @@ const ALL_QUESTIONS = [
   },
   { 
     type: '객관식', 
-    q: '<폭풍의 메이드>와 콜라보 DLC의 출시가 빠른 순서대로 나열된 것을 고르시오.', 
-    options: ['A. C>D>B>F>A>E', 'B. B>F>A>C>E>D', 'C. A>C>D>B>F>E', 'D. E>C>D>F>B>A'], 
+    q: '<폭풍의 메이드>와 콜라보 DLC의 출시가 빠른 순서대로 나열된 것을 고르시오.
+      [보기] 1.블랙 하트 2.썸썸 편의점 3.서큐하트 4.러브 스티치 5.프렌치 커넥션 6.기적의 분식집', 
+    options: ['A. 3>4>2>6>1>5', 'B. 2>6>1>3>5>4', 'C. 1>3>4>2>6>5', 'D. 5>3>4>6>2>1'], 
     answer: 'A' 
   },
   { 
@@ -243,5 +244,6 @@ function showResult(){
   elDetail.textContent    = `문항별 소요(초): ${perTimes.join(' / ')}`;
   if(score===POINT*quizData.length) elCongrats.style.display='block';
 }
+
 
 
