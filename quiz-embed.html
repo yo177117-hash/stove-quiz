@@ -6,6 +6,7 @@
 <title>스토브 능력시험</title>
 <style>
 :root{--orange:#ff6b00}
+*{box-sizing:border-box}
 body{margin:0;background:#f7f7fb}
 .wrap{font-family:Pretendard,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;color:#0f172a;max-width:760px;margin:0 auto;padding:0 16px 40px}
 .card{background:#fff;border:1px solid #e6e9f4;border-radius:16px;padding:28px;box-shadow:0 8px 28px rgba(17,24,39,.08)}
@@ -15,6 +16,7 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 .start-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
 .btn{appearance:none;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;background:#111827;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .btn.secondary{background:#eef1f7;color:#111827}
+.btn.link{background:#fff;border:1px solid #e6e9f4;color:#0f172a}
 .btn:active{transform:translateY(1px)}
 .quiz-box{display:none}
 .q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:15px;color:#4b5563}
@@ -31,6 +33,10 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 .time-total{color:#4b5563;margin-bottom:16px;font-weight:700}
 .congrats{display:none;margin-top:12px;padding:14px;border-radius:12px;background:#fff8db}
 .congrats a{color:var(--orange);font-weight:900;text-decoration:none}
+.grade{margin-top:18px;padding:14px;border-radius:12px;background:#f6f7ff;border:1px solid #e3e7ff}
+.grade strong{color:#111827}
+.grade-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #e6e9f4;font-size:12px;color:#6b7280}
 </style>
 </head>
 <body>
@@ -38,6 +44,7 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
   <div id="start" class="card center">
     <h1>스토브 능력시험</h1>
     <div class="muted">문항당 60초, 총 9문제 · 문제당 10점</div>
+    <div class="badge">v1.1 · GitHub Pages</div>
     <p style="margin:18px 0 0;font-weight:800;">스토브능력시험을 시작하겠습니까?</p>
     <div class="start-actions">
       <button type="button" class="btn" id="btnYes">네</button>
@@ -61,9 +68,13 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
   </div>
 
   <div id="result" class="card result center">
-    <div class="score" id="scoreText">당신의 점수는 0점입니다. (총 9문항, 문항당 10점)</div>
+    <div class="score" id="scoreText">당신의 점수는 0점입니다.</div>
     <div class="time-total" id="timeText">총 소요 시간: 0초</div>
     <div class="muted" id="detailTimes" style="font-size:13px;"></div>
+
+    <!-- 등급 메시지/버튼 출력 영역 -->
+    <div class="grade" id="gradeBox" style="display:none"></div>
+
     <div class="congrats" id="congrats">
       🎉 <strong>축하합니다! 만점을 획득하셨어요.</strong><br/>
       <a href="https://store.onstove.com" target="_blank" rel="noopener">스토브 스토어 바로가기</a>
@@ -73,9 +84,11 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 
 <script>
 (function(){
-  var LIMIT=9, POINT=10, T=60;
-  var ALL_QUESTIONS=[
+  // ===== 설정 =====
+  const LIMIT = 9, POINT = 10, T = 60;
 
+  // ===== 데이터 =====
+  const ALL_QUESTIONS = [
     {type:'객관식', q:'[두근두근 야심작]의 시작을 함께한 첫번째 타이틀을 고르시오', options:['A. 동아리','B. 러브 리플레이','C. 러브 스티치','D. 러브인 로그인', 'E. 러브 딜리버리'], answer:'E'},
     {type:'객관식', q:'2025년 진행했던 스토브 이벤트 중 이름이 잘못된 것을 고르시오.', options:['A. 할인이 왔당근','B. 새로 시작했나봄','C. 구구 후기 이벤트','D. 방구석 겜캉스', 'E. 리얼썸머 얼리썸머'], answer:'A'},
     {type:'객관식', q:'다음 중 2025년에 스토브에 새로 출시된 게임이 아닌 것을 고르시오.', options:['A. 슈퍼 판타지 킹덤','B. 캐틀 컨트리','C. 헤비 레인','D. 후즈 앳 더 도어', 'E. 이프선셋'], answer:'E'},
@@ -103,66 +116,180 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
     {type:'주관식', q:'<클레르 옵스퀴르: 33 원정대>에서 일 년에 한번씩 잠에서 깨어나 거석 위에 저주받은 숫자를 적는 "이것"의 이름을 적으시오.(※한국어 명칭 띄어쓰기 없이 기입)', answer:'페인트리스'},
     {type:'주관식', q:'<아르티스 임팩트>의 주인공 아카네가 속한 AI 저항조직의 이름을 적으시오.(※한국어 명칭 띄어쓰기 없이 기입)', answer:'리트'},
     {type:'주관식', q:"2022년부터 일 년에 한 번, 스마일게이트 주체로 진행되었던 인디게임 축제 '버닝비버'가 2025을 맞이하여 새로운 이름으로 개최됩니다. 인디게임 창작자들의 열정과 창의성을 공유하는 이 축제의 새로운 이름을 적으시오.(※한국어 명칭 띄어쓰기 없이 기입)", answer:'비버롹스'}
-  
-];
+  ];
 
-  function $(s){return document.querySelector(s)}
-  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+  // ===== 엘리먼트 =====
+  const $ = s => document.querySelector(s);
+  const elStart=$("#start"), elQuiz=$("#quiz"), elResult=$("#result"),
+        elProgress=$("#progress"), elTimeLabel=$("#timeLabel"),
+        elQuestion=$("#question"), elOptions=$("#options"),
+        elInputWrap=$("#inputWrap"), elAnswer=$("#answerInput"),
+        elSubmit=$("#submitBtn"), elScoreText=$("#scoreText"),
+        elTimeText=$("#timeText"), elDetail=$("#detailTimes"),
+        elCongrats=$("#congrats"), elGrade=$("#gradeBox");
 
-  var elStart=$("#start"),elQuiz=$("#quiz"),elResult=$("#result"),
-      elProgress=$("#progress"),elTimeLabel=$("#timeLabel"),
-      elQuestion=$("#question"),elOptions=$("#options"),
-      elInputWrap=$("#inputWrap"),elAnswer=$("#answerInput"),
-      elSubmit=$("#submitBtn"),elScoreText=$("#scoreText"),
-      elTimeText=$("#timeText"),elDetail=$("#detailTimes"),
-      elCongrats=$("#congrats");
-  var quizData=[],current=0,score=0,timer=null,qStartTs=0,perTimes=[];
+  // ===== 상태 =====
+  let quizData=[], current=0, score=0, timer=null, qStartTs=0, perTimes=[];
+
+  // ===== 유틸 =====
+  const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+  const norm = s => String(s??'').trim().toLowerCase().replace(/\s+/g,''); // 공백/대소문자 무시 비교
+
+  // ===== 로직 =====
+  function bootstrap(){
+    $("#btnYes").addEventListener('click', startQuiz);
+    $("#btnNo").addEventListener('click', ()=>alert('다음에 다시 도전해 주세요!'));
+    // 주관식: 엔터 제출
+    elAnswer.addEventListener('keydown', e=>{ if(e.key==='Enter') elSubmit.click(); });
+    // 제출 버튼
+    elSubmit.addEventListener('click', ()=>{
+      const q = quizData[current];
+      submitAnswer(q && q.type==='주관식' ? (elAnswer.value||'') : null);
+    });
+  }
 
   function startQuiz(){
-    quizData=shuffle(ALL_QUESTIONS.slice()).slice(0,LIMIT);
-    elStart.style.display="none"; elQuiz.style.display="block";
-    current=0; score=0; perTimes=[]; showQuestion(); startTimer();
+    quizData = shuffle([...ALL_QUESTIONS]).slice(0, LIMIT);
+    elStart.style.display='none';
+    elResult.style.display='none';
+    elQuiz.style.display='block';
+    current=0; score=0; perTimes=[];
+    showQuestion(); startTimer();
   }
+
   function showQuestion(){
-    var q=quizData[current];
-    elProgress.textContent=(current+1)+" / "+quizData.length;
-    elQuestion.textContent=q.q; elOptions.innerHTML=""; elAnswer.value="";
-    if(q.type==="객관식"){
-      elInputWrap.style.display="none";
-      q.options.forEach(function(o){
-        var b=document.createElement("button"); b.textContent=o;
-        var letter=((o.match(/^[A-Ea-e]/)||[])[0]||o[0]||"").toUpperCase();
-        b.addEventListener("click",function(){submitAnswer(letter)});
-        elOptions.appendChild(b);
+    const q=quizData[current];
+    elProgress.textContent = `${current+1} / ${quizData.length}`;
+    elQuestion.textContent = q.q;
+    elOptions.innerHTML=''; elAnswer.value='';
+    if(q.type==='객관식'){
+      elInputWrap.style.display='none';
+      q.options.forEach(o=>{
+        const btn=document.createElement('button');
+        btn.textContent=o;
+        const letter=((o.match(/^[A-Ea-e]/)||[])[0] || o[0] || '').toUpperCase();
+        btn.addEventListener('click',()=>submitAnswer(letter));
+        elOptions.appendChild(btn);
       });
     }else{
-      elInputWrap.style.display="block"; try{elAnswer.focus({preventScroll:true})}catch(e){}
+      elInputWrap.style.display='block';
+      try{ elAnswer.focus({preventScroll:true}); }catch(e){}
     }
   }
-  function startTimer(){clearInterval(timer); qStartTs=Date.now(); tick(); timer=setInterval(tick,200)}
-  function tick(){var e=Math.floor((Date.now()-qStartTs)/1000),l=Math.max(0,T-e); elTimeLabel.textContent="남은시간: "+l+"초"; if(l<=0) submitAnswer(null,true)}
-  function submitAnswer(val,timeout){if(timeout===void 0)timeout=false; if(!timer)return; clearInterval(timer); timer=null;
-    var elapsed=Math.min(T,Math.round((Date.now()-qStartTs)/1000)); perTimes.push(elapsed);
-    var q=quizData[current];
+
+  function startTimer(){
+    clearInterval(timer);
+    qStartTs=Date.now(); tick();
+    timer=setInterval(tick,200);
+  }
+
+  function tick(){
+    const elapsed=Math.floor((Date.now()-qStartTs)/1000);
+    const left=Math.max(0, T-elapsed);
+    elTimeLabel.textContent=`남은시간: ${left}초`;
+    if(left<=0) submitAnswer(null,true);
+  }
+
+  function submitAnswer(val, timeout=false){
+    if(!timer) return;
+    clearInterval(timer); timer=null;
+
+    const elapsedSec=Math.min(T, Math.round((Date.now()-qStartTs)/1000));
+    perTimes.push(elapsedSec);
+
+    const q=quizData[current];
     if(!timeout){
-      var ans=(q.type==="주관식")?(elAnswer.value||"").trim():val;
-      if(ans && q.type==="객관식"){ if(String(ans).toUpperCase()===String(q.answer).toUpperCase()) score+=POINT; }
-      else if(q.type==="주관식"){ if(ans.toLowerCase()===String(q.answer).trim().toLowerCase()) score+=POINT; }
+      if(q.type==='객관식'){
+        if(val && String(val).toUpperCase()===String(q.answer).toUpperCase()) score+=POINT;
+      }else{
+        if(norm(val)===norm(q.answer)) score+=POINT;
+      }
     }
     nextQuestion();
   }
-  function nextQuestion(){current++; if(current<quizData.length){showQuestion(); startTimer();} else showResult();}
-  function showResult(){
-    elQuiz.style.display="none"; elResult.style.display="block";
-    var total=perTimes.reduce(function(a,b){return a+b},0);
-    elScoreText.textContent="당신의 점수는 "+score+"점입니다. (총 "+quizData.length+"문항, 문항당 "+POINT+"점)";
-    elTimeText.textContent="총 소요 시간: "+total+"초";
-    elDetail.textContent="문항별 소요(초): "+perTimes.join(" / ");
-    if(score===POINT*quizData.length) elCongrats.style.display="block";
+
+  function nextQuestion(){
+    current++;
+    if(current<quizData.length){ showQuestion(); startTimer(); }
+    else showResult();
   }
 
-  $("#btnYes").addEventListener("click",startQuiz);
-  $("#btnNo").addEventListener("click",function(){alert("다음에 다시 도전해 주세요!")});
+  function showResult(){
+    elQuiz.style.display='none';
+    elResult.style.display='block';
+    const total=perTimes.reduce((a,b)=>a+b,0);
+    elScoreText.textContent=`당신의 점수는 ${score}점입니다. (총 ${quizData.length}문항, 문항당 ${POINT}점)`;
+    elTimeText.textContent=`총 소요 시간: ${total}초`;
+    elDetail.textContent=`문항별 소요(초): ${perTimes.join(' / ')}`;
+
+    // 등급 계산 및 렌더
+    renderGrade(score/POINT);
+  }
+
+  function renderGrade(correctCnt){
+    elCongrats.style.display='none';
+    elGrade.style.display='block';
+    elGrade.innerHTML=''; // reset
+
+    const actions = document.createElement('div');
+    actions.className='grade-actions';
+
+    const makeBtn = (label, attrs={})=>{
+      const a=document.createElement(attrs.href ? 'a' : 'button');
+      a.className='btn' + (attrs.kind ? ' '+attrs.kind : '');
+      a.textContent=label;
+      if(attrs.href){ a.href=attrs.href; a.target='_blank'; a.rel='noopener'; }
+      if(attrs.on){ a.addEventListener('click', attrs.on); }
+      return a;
+    };
+
+    const retryBtn = makeBtn('재도전하기', { on: startQuiz });
+    const stoveBtn = makeBtn('스토브 바로가기', { href:'https://www.onstove.com', kind:'link' });
+    const storeBtn = makeBtn('스토브 스토어 바로가기 🎁', { href:'https://store.onstove.com' });
+
+    // 메시지 분기
+    let msg='';
+    if(correctCnt===9){
+      msg = '🎁 <strong>당신은 1등급! 항상 감사합니다.</strong>';
+      actions.appendChild(storeBtn);
+      // 완벽 달성 배지도 표시
+      elCongrats.style.display='block';
+    } else if(correctCnt===8){
+      msg = '<strong>아쉽네요. 당신은 2등급!</strong> 재도전하세요!';
+      actions.appendChild(retryBtn);
+    } else if(correctCnt===7){
+      msg = '<strong>아쉽네요. 당신은 3등급!</strong> 재도전하세요!';
+      actions.appendChild(retryBtn);
+    } else if(correctCnt===6){
+      msg = '<strong>분발하세요. 당신은 4등급!</strong> 재도전하세요!';
+      actions.appendChild(retryBtn);
+    } else if(correctCnt===5){
+      msg = '<strong>분발하세요. 당신은 5등급!</strong> 재도전하세요!';
+      actions.appendChild(retryBtn);
+    } else if(correctCnt===4){
+      msg = '<strong>우리 더 가까워져요. 당신은 6등급!</strong> 스토브에서 더 게임하세요!';
+      actions.appendChild(retryBtn);
+      actions.appendChild(stoveBtn);
+    } else if(correctCnt===3){
+      msg = '<strong>우리 더 가까워져요. 당신은 7등급!</strong> 스토브에서 더 게임하세요!';
+      actions.appendChild(retryBtn);
+      actions.appendChild(stoveBtn);
+    } else if(correctCnt===2){
+      msg = '<strong>우리 아직 좀 어색하죠... 당신은 8등급!</strong> 스토브를 더 사랑해주세요!';
+      actions.appendChild(retryBtn);
+      actions.appendChild(stoveBtn);
+    } else { // 1개 또는 0개
+      msg = '<strong>이렇게 스토브에 방문해주셔서 감사합니다. 당신은 9등급!</strong> 회원님을 많이 많이 사랑해요!';
+      actions.appendChild(retryBtn);
+      actions.appendChild(stoveBtn);
+    }
+
+    elGrade.innerHTML = msg;
+    elGrade.appendChild(actions);
+  }
+
+  // 부트
+  bootstrap();
 })();
 </script>
 </body>
