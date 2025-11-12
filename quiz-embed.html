@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>스토브 능력시험</title>
+<title>스토브 능력고사</title>
 <style>
 :root{--orange:#ff6b00}
 *{box-sizing:border-box}
@@ -45,7 +45,7 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
     <h1>스토브 능력시험</h1>
     <div class="muted">문항당 60초, 총 9문제 · 문항당 10점</div>
     <div class="badge">v1.2 · GitHub Pages</div>
-    <p style="margin:18px 0 0;font-weight:800;">스토브능력시험을 시작하겠습니까?</p>
+    <p style="margin:18px 0 0;font-weight:800;">스토브능력고사를 시작하겠습니까?</p>
     <div class="start-actions">
       <button type="button" class="btn" id="btnYes">네</button>
       <!-- 아니오: 스토브 스토어로 상위탭 이동 -->
@@ -231,8 +231,8 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
     };
 
     const retryBtn = makeBtn('재도전하기', { on: startQuiz });
-    const stoveBtn = makeBtn('스토브 바로가기', { href:'https://www.onstove.com', kind:'link', target:'_top' });
-    const storeBtn = makeBtn('스토브 스토어 바로가기 🎁', { href:'https://store.onstove.com', target:'_top' });
+    const stoveBtn = makeBtn('스토브 스토어 바로가기', { href:'https://store.onstove.com', kind:'link', target:'_top' });
+    const storeBtn = makeBtn('만점 경품 받으러가기 🎁', { href:'https://store.onstove.com', target:'_top' });
 
     let msg='';
     if(correctCnt===9){
@@ -288,5 +288,6 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
 </script>
 </body>
 </html>
+
 
 
