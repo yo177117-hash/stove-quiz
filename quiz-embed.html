@@ -214,17 +214,7 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
     else showResult();
   }
 
-  function showResult(){
-    elQuiz.style.display='none';
-    elResult.style.display='block';
-    const total=perTimes.reduce((a,b)=>a+b,0);
-    elScoreText.textContent=`당신의 점수는 ${score}점입니다. (총 ${quizData.length}문항, 문항당 ${POINT}점)`;
-    elTimeText.textContent=`총 소요 시간: ${total}초`;
-    elDetail.textContent=`문항별 소요(초): ${perTimes.join(' / ')}`;
-    renderGrade(score/POINT);
-  }
-
-  function renderGrade(correctCnt){
+    function renderGrade(correctCnt){
     elCongrats.style.display='none';
     elGrade.style.display='block';
     elGrade.innerHTML='';
@@ -288,8 +278,19 @@ h1{margin:0 0 12px;font-size:28px;font-weight:900;letter-spacing:-.2px;color:var
     elGrade.appendChild(actions);
   }
 
+  
+  function showResult(){
+    elQuiz.style.display='none';
+    elResult.style.display='block';
+    const total=perTimes.reduce((a,b)=>a+b,0);
+     elTimeText.textContent=`총 소요 시간: ${total}초`;
+    elDetail.textContent=`문항별 소요(초): ${perTimes.join(' / ')}`;
+    renderGrade(score/POINT);
+  }
+
   bootstrap();
 })();
 </script>
 </body>
 </html>
+
